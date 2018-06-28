@@ -47,7 +47,7 @@
    // Admin configuration - Settings.
    $items['admin/config/custom_module/manage'] = array(
      'title' => 'Custom Module settings',
-     'description' => 'Manage Wind Farm settings and configurations.',
+     'description' => 'Manage Custom Module settings and configurations.',
      'access arguments' => array('administer Custom Module'),
      'page callback' => 'drupal_get_form',
      'page arguments' => array('custom_module_admin_settings_form'),
