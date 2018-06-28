@@ -1,0 +1,20 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+
+ /**
+  * Implements hook_help().
+  */
+ function custom_module_d7_help($path, $arg) {
+   switch ($path) {
+     case 'admin/help#custom_module_d7':{
+       $ret_val = '<h3>' . t('About') . '</h3>';
+       $ret_val .= '<p>' . t('Custom Module Drupal7.') . '</p>';
+       return $ret_val;
+       break;
+     }
+   }
+ }

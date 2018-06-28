@@ -1,0 +1,4 @@
+name = Custom Module d7
+description = A Custom Module in Drupal 7.
+core = 7.x
+version = 7.x-0.1-dev
