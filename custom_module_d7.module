@@ -24,9 +24,34 @@
   */
  function custom_module_d7_permission() {
    return array(
-     'Custom Module Drupal7' => array(
-       'title' => t('Custom Module in Drupal 7'),
-       'description' => t('Custom Module in Drupal 7'),
+     'Custom Module Drupal 7' => array(
+       'title' => t('Custom Module'),
+       'description' => t('Custom Module in Drupal 7.'),
      ),
    );
+ }
+
+ /**
+  * Implements hook_menu().
+  */
+ function custom_module_d7_menu() {
+   $items = array();
+
+   // Admin configuration group.
+   $items['admin/config/custom_module'] = array(
+     'title' => 'Custom Module',
+     'description' => 'Administer Custom Module in Drupal 7.',
+     'access arguments' => array('administer Custom Module'),
+   );
+
+   // Admin configuration - Settings.
+   $items['admin/config/custom_module/manage'] = array(
+     'title' => 'Custom Module settings',
+     'description' => 'Manage Wind Farm settings and configurations.',
+     'access arguments' => array('administer Custom Module'),
+     'page callback' => 'drupal_get_form',
+     'page arguments' => array('custom_module_admin_settings_form'),
+   );
+
+   return $items;
  }
