@@ -123,29 +123,29 @@
  /**
   * Validates Wind Farm admin settings.
   */
- function windfarms_admin_settings_form_validate($form, &$form_state) {
+ function custom_module_admin_settings_form_validate($form, &$form_state) {
    dpm($form_state['values']);
 
    // Regular expression for validating signed degrees.
    $signed_degree_regex = '/^[+-]?\d+(\.\d+)?$/';
 
    // Shorthand for long array names.
-   $lat = $form_state['values']['windfarms_default_center_lat'];
-   $long = $form_state['values']['windfarms_default_center_long'];
+   $lat = $form_state['values']['custom_module_default_center_lat'];
+   $long = $form_state['values']['custom_module_default_center_long'];
 
    // Validate latitude and longitude format.
    if (!preg_match($signed_degree_regex, $lat)) {
-     form_set_error('windfarms_default_center_lat', t('Invalid latitude; must be a signed degree (DDD.dddd).'));
+     form_set_error('custom_module_default_center_lat', t('Invalid latitude; must be a signed degree (DDD.dddd).'));
    }
    if (!preg_match($signed_degree_regex, $long)) {
-     form_set_error('windfarms_default_center_long', t('Invalid longitude; must be a signed degree (DDD.dddd).'));
+     form_set_error('custom_module_default_center_long', t('Invalid longitude; must be a signed degree (DDD.dddd).'));
    }
 
    // Validate latitude and longitude values.
    if (!((-180 <= $lat) && ($lat <= 180))) {
-     form_set_error('windfarms_default_center_lat', t('Latitude must be between -180 and 180'));
+     form_set_error('custom_module_default_center_lat', t('Latitude must be between -180 and 180'));
    }
    if (!((-180 <= $long) && ($long <= 180))) {
-     form_set_error('windfarms_default_center_long', t('Longitude must be between -180 and 180'));
+     form_set_error('custom_module_default_center_long', t('Longitude must be between -180 and 180'));
    }
  }
