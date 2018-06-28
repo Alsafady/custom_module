@@ -17,8 +17,6 @@
      }
    }
  }
-
-
  /**
   * Implements hook_permission().
   */
@@ -54,4 +52,69 @@
    );
 
    return $items;
+ }
+
+
+ /**
+  * Implements hook_form().
+  */
+ function windfarms_admin_settings_form($node, &$form_state) {
+   $form = array();
+
+   $form['overview'] = array(
+     '#markup' => t('This interface allows administrators to manage general Wind Farm Settings'),
+     '#prefix' => '<p>',
+     '#suffix' => '</p>',
+   );
+
+   $form['windfarms_gmap'] = array(
+     '#title' => t('Enable Google Maps'),
+     '#description' => t('When enabled, Google Maps will be rendered if latitude and longitude are known.'),
+     '#type' => 'checkbox',
+     '#default_value' => 1,
+   );
+
+   $form['default_center'] = array(
+     '#title' => t('Map Center'),
+     '#description' => t('Location of the center of the map of wind farms.'),
+     '#type' => 'fieldset',
+     '#collapsible' => TRUE,
+     '#collapsed' => FALSE,
+   );
+
+   $form['default_center']['windfarms_default_center_lat'] = array(
+     '#title' => t('Latitude'),
+     '#description' => t('Signed degrees format (DDD.dddd)'),
+     '#type' => 'textfield',
+     '#default_value' => 42.91455,
+     '#required' => TRUE,
+   );
+
+   $form['default_center']['windfarms_default_center_long'] = array(
+     '#title' => t('Longitude'),
+     '#description' => t('Signed degrees format (DDD.dddd)'),
+     '#type' => 'textfield',
+     '#default_value' => -75.569851,
+     '#required' => TRUE,
+   );
+
+   $options = range(0, 20, 1);
+   $options[0] = t('0 - Furthest');
+   $options[20] = t('20 - Closest');
+
+   $form['windfarms_default_gmap_zoom'] = array(
+     '#title' => t('Google Map zoom'),
+     '#description' => t('Default level of zoom, between 0 and 20.'),
+     '#type' => 'select',
+     '#options' => $options,
+     '#default_value' => 8,
+     '#required' => TRUE,
+   );
+
+   $form['submit'] = array(
+     '#type' => 'submit',
+     '#value' => t('Save'),
+   );
+
+   return $form;
  }
