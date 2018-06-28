@@ -7,11 +7,11 @@
  /**
   * Implements hook_help().
   */
- function custom_module_d7_help($path, $arg) {
+ function custom_module_help($path, $arg) {
    switch ($path) {
-     case 'admin/help#custom_module_d7':{
+     case 'admin/help#custom_module':{
        $ret_val = '<h3>' . t('About') . '</h3>';
-       $ret_val .= '<p>' . t('Custom Module Drupal7.') . '</p>';
+       $ret_val .= '<p>' . t('Custom Module.') . '</p>';
        return $ret_val;
        break;
      }
@@ -20,7 +20,7 @@
  /**
   * Implements hook_permission().
   */
- function custom_module_d7_permission() {
+ function custom_module_permission() {
    return array(
      'Custom Module Drupal 7' => array(
        'title' => t('Custom Module'),
@@ -32,7 +32,7 @@
  /**
   * Implements hook_menu().
   */
- function custom_module_d7_menu() {
+ function custom_module_menu() {
    $items = array();
 
    // Admin configuration group.
@@ -58,16 +58,16 @@
  /**
   * Implements hook_form().
   */
- function windfarms_admin_settings_form($node, &$form_state) {
+ function custom_module_admin_settings_form($node, &$form_state) {
    $form = array();
 
    $form['overview'] = array(
-     '#markup' => t('This interface allows administrators to manage general Wind Farm Settings'),
+     '#markup' => t('This interface allows administrators to manage general Custom Module Settings'),
      '#prefix' => '<p>',
      '#suffix' => '</p>',
    );
 
-   $form['windfarms_gmap'] = array(
+   $form['custom_module_gmap'] = array(
      '#title' => t('Enable Google Maps'),
      '#description' => t('When enabled, Google Maps will be rendered if latitude and longitude are known.'),
      '#type' => 'checkbox',
@@ -82,7 +82,7 @@
      '#collapsed' => FALSE,
    );
 
-   $form['default_center']['windfarms_default_center_lat'] = array(
+   $form['default_center']['custom_module_default_center_lat'] = array(
      '#title' => t('Latitude'),
      '#description' => t('Signed degrees format (DDD.dddd)'),
      '#type' => 'textfield',
@@ -90,7 +90,7 @@
      '#required' => TRUE,
    );
 
-   $form['default_center']['windfarms_default_center_long'] = array(
+   $form['default_center']['custom_module_default_center_long'] = array(
      '#title' => t('Longitude'),
      '#description' => t('Signed degrees format (DDD.dddd)'),
      '#type' => 'textfield',
@@ -102,7 +102,7 @@
    $options[0] = t('0 - Furthest');
    $options[20] = t('20 - Closest');
 
-   $form['windfarms_default_gmap_zoom'] = array(
+   $form['custom_module_default_gmap_zoom'] = array(
      '#title' => t('Google Map zoom'),
      '#description' => t('Default level of zoom, between 0 and 20.'),
      '#type' => 'select',
