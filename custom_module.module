@@ -149,3 +149,21 @@
      form_set_error('custom_module_default_center_long', t('Longitude must be between -180 and 180'));
    }
  }
+
+
+ /**
+  * Process a validated Wind Farm admin setting submission.
+  */
+ function custom_module_admin_settings_form_submit($form, &$form_state) {
+   // Rebuild the form.
+   $form_state['rebuild'] = TRUE;
+
+   // Save Wind Farm setting variables.
+   variable_set('custom_module_gmap', $form_state['values']['custom_module_gmap']);
+   variable_set('custom_module_default_center_lat', $form_state['values']['custom_module_default_center_lat']);
+   variable_set('custom_module_default_center_long', $form_state['values']['custom_module_default_center_long']);
+   variable_set('custom_module_default_gmap_zoom', $form_state['values']['custom_module_default_gmap_zoom']);
+
+   // Notify user.
+   drupal_set_message(t('Custom Module settings saved.'));
+ }
