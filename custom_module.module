@@ -121,7 +121,7 @@
 
 
  /**
-  * Validates Wind Farm admin settings.
+  * Validates Custom Module admin settings.
   */
  function custom_module_admin_settings_form_validate($form, &$form_state) {
    dpm($form_state['values']);
@@ -152,7 +152,7 @@
 
 
  /**
-  * Process a validated Wind Farm admin setting submission.
+  * Process a validated Custom Module admin setting submission.
   */
  function custom_module_admin_settings_form_submit($form, &$form_state) {
    // Rebuild the form.
