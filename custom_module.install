@@ -25,7 +25,7 @@ function custom_module_install() {
 $content_type = array(
   'type' => 'custom_module',
   'name' => $t('Custom Module'),
-  'description' => $t('A Custom Module, including location.'),
+  'description' => $t('A Custom Module, including Fields.'),
   'title_label' => $t('Title or Name'),
   'base' => 'node_content',
   'custom' => TRUE,
