@@ -39,8 +39,120 @@ node_type_save($node_type);
 }
 
 
+  // Add a field for the body.
+  node_add_body_field($node_type, $t('Description'));
 
+  // Create fields.
+  $fields = array();
 
+  $fields['custom_module_unit_count'] = array(
+    'field_name' => 'custom_module_unit_count',
+    'type' => 'number_integer',
+    // Optional.
+    'cardinality' => 1,
+    'settings' => array(
+      'max_length' => 5,
+    ),
+  );
+
+  $fields['custom_module_latitude'] = array(
+    'field_name' => 'custom_module_latitude',
+    'type' => 'number_float',
+    'settings' => array(
+      'max_length' => 20,
+    ),
+  );
+
+  $fields['custom_module_longitude'] = array(
+    'field_name' => 'custom_module_longitude',
+    'type' => 'number_float',
+    'settings' => array(
+      'max_length' => 20,
+    ),
+  );
+
+  $fields['custom_module_city'] = array(
+    'field_name' => 'custom_module_city',
+    'type' => 'text',
+    'settings' => array(
+      'max_length' => 60,
+    ),
+  );
+
+  foreach ($fields as $field) {
+    field_create_field($field);
+  }
+
+  // Create Field Instances.
+  $instances = array();
+
+  $instances['custom_module_unit_count'] = array(
+    'field_name' => 'custom_module_unit_count',
+    'label' => $t('Number of Units'),
+    'description' => $t('Number of individual units.'),
+    'widget' => array(
+      'type' => 'text_textfield',
+    ),
+    'required' => TRUE,
+    'settings' => array(
+      'text_processing' => 0,
+    ),
+  );
+
+  $instances['custom_module_latitude'] = array(
+    'field_name' => 'custom_module_latitude',
+    'label' => $t('Latitude'),
+    'description' => $t('Signed degrees format (DDD.dddd)'),
+    'widget' => array(
+      'type' => 'text_textfield',
+    ),
+    'settings' => array(
+      'text_processing' => 0,
+    ),
+    'display' => array(
+      'default' => array(
+        'type' => 'hidden',
+      ),
+    ),
+  );
+
+  $instances['custom_module_longitude'] = array(
+    'field_name' => 'custom_module_longitude',
+    'label' => $t('Longitude'),
+    'description' => $t('Signed degrees format (DDD.dddd)'),
+    'widget' => array(
+      'type' => 'text_textfield',
+    ),
+    'settings' => array(
+      'text_processing' => 0,
+    ),
+    'display' => array(
+      'default' => array(
+        'type' => 'hidden',
+      ),
+    ),
+  );
+
+  $instances['custom_module_city'] = array(
+    'field_name' => 'custom_module_city',
+    'label' => $t('The City'),
+    'description' => $t('The name of the City'),
+    'widget' => array(
+      'type' => 'text_textfield',
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+      ),
+    ),
+  );
+
+  foreach ($instances as $instance) {
+    $instance['entity_type'] = 'node';
+    $instance['bundle'] = 'custom_module';
+    field_create_instance($instance);
+  }
+}
 
 /**
  * Implements hook_uninstall().
