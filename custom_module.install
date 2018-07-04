@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Wind Farms installation
+ * Custom Module installation
  */
 
 /**
@@ -18,7 +18,7 @@ function custom_module_install() {
   $t = get_t();
 
   // Give user feedback.
-  drupal_set_message($t('Wind Farms variables created.'));
+  drupal_set_message($t('Custom Module variables created.'));
 }
 
 /**
@@ -33,5 +33,5 @@ function custom_module_uninstall() {
 
   // Inform the user of the removal.
   $t = get_t();
-  drupal_set_message($t('Wind Farms variables removed.'));
+  drupal_set_message($t('Custom Module variables removed.'));
 }
