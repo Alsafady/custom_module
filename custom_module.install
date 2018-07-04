@@ -21,6 +21,27 @@ function custom_module_install() {
   drupal_set_message($t('Custom Module variables created.'));
 }
 
+// Content type definition.
+$content_type = array(
+  'type' => 'custom_module',
+  'name' => $t('Custom Module'),
+  'description' => $t('A Custom Module, including location.'),
+  'title_label' => $t('Title or Name'),
+  'base' => 'node_content',
+  'custom' => TRUE,
+);
+
+// Set remaining definitions with defaults.
+$node_type = node_type_set_defaults($content_type);
+
+// Save the content type.
+node_type_save($node_type);
+}
+
+
+
+
+
 /**
  * Implements hook_uninstall().
  */
