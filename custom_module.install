@@ -154,7 +154,6 @@ node_type_save($node_type);
   }
 }
 
-
 /**
  * Implements hook_uninstall().
  */

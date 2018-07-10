@@ -118,7 +118,6 @@
    return $form;
  }
 
-
  /**
   * Validates Custom Module admin settings.
   */
