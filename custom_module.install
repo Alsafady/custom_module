@@ -4,12 +4,6 @@
  * Custom Module installation
  */
 
-
-
-
-
-
-
 /**
  * Implements hook_install().
  */
