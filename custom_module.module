@@ -164,3 +164,75 @@
    // Notify user.
    drupal_set_message(t('Custom Module settings saved.'));
  }
+
+
+
+
+
+
+
+
+
+/**
+ * Implements hook_node_view().
+ */
+function custom_module_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'custom_module' && $view_mode == 'full') {
+    $node->content['custom_module_gmap'] = array(
+      '#markup' => theme('custom_module_gmap', array(
+        'node' => $node,
+      )),
+      '#weight' => 100,
+    );
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function custom_module_theme($existing, $type, $theme, $path) {
+  return array(
+    'custom_module_gmap' => array(
+      'variables' => array('node' => NULL),
+    ),
+  );
+}
+
+/**
+ * Wind Farm Google Map theme function.
+ */
+function theme_custom_module_gmap($variables) {
+  // Check to see if the Google Map is enabled.
+  if (!variable_get('custom_module_gmap')) {
+    return;
+  }
+
+  $lat = $variables['node']->custom_module_latitude[LANGUAGE_NONE][0]['value'];
+  $long = $variables['node']->custom_module_longitude[LANGUAGE_NONE][0]['value'];
+
+  // Cannot render map without both a latitude and longitude.
+  if (($lat == '') || ($long == '')) {
+    return;
+  }
+
+  module_load_include('inc', 'gmap3_tools');
+
+  $facility_name = check_plain($variables['node']->title);
+  $description = check_plain($variables['node']->body[LANGUAGE_NONE][0]['value']);
+  gmap3_tools_add_map(array(
+    'mapId' => 'gmap-canvas-' . $variables['node']->nid,
+    'mapOptions' => array(
+      'zoom' => (int) variable_get('custom_module_default_gmap_zoom'),
+      'mapTypeId' => GMAP3_TOOLS_MAP_TYPE_ID_SATELLITE,
+    ),
+    'markers' => array(
+      gmap3_tools_create_marker($lat, $long, $facility_name, $description),
+    ),
+    'gmap3ToolsOptions' => array(
+      'defaultMarkersPosition' => GMAP3_TOOLS_DEFAULT_MARKERS_POSITION_CENTER,
+    ),
+  ));
+
+  $output = '<div id="gmap-canvas-' . $variables['node']->nid . '" style="width:500px;height:400px;"></div>';
+  return $output;
+}
