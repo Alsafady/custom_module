@@ -17,6 +17,18 @@
      }
    }
  }
+
+
+
+
+
+
+
+
+
+
+
+
  /**
   * Implements hook_permission().
   */
@@ -35,11 +47,14 @@
  function custom_module_menu() {
    $items = array();
 
+
    // Admin configuration group.
    $items['admin/config/custom_module'] = array(
      'title' => 'Custom Module',
-     'description' => 'Administer Custom Module in Drupal 7.',
+     'description' => 'Administer Custom Module in Drupal.',
      'access arguments' => array('administer Custom Module'),
+
+
    );
 
    // Admin configuration - Settings.
@@ -53,6 +68,9 @@
 
    return $items;
  }
+
+
+
 
  /**
   * Implements hook_form().
@@ -101,6 +119,13 @@
    $options[0] = t('0 - Furthest');
    $options[20] = t('20 - Closest');
 
+
+
+
+
+
+
+
    $form['custom_module_default_gmap_zoom'] = array(
      '#title' => t('Google Map zoom'),
      '#description' => t('Default level of zoom, between 0 and 20.'),
@@ -114,7 +139,7 @@
      '#type' => 'submit',
      '#value' => t('Save'),
    );
-
+   //return system_settings_form($form);
    return $form;
  }
 
