@@ -231,3 +231,126 @@ function theme_custom_module_gmap($variables) {
   $output = '<div id="gmap-canvas-' . $variables['node']->nid . '" style="width:500px;height:400px;"></div>';
   return $output;
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function custom_module_block_info() {
+  $blocks = array();
+
+  $blocks['gmap'] = array(
+    'info' => t('Custom Module Map'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function custom_module_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'gmap':{
+      $block['subject'] = t('Custom Module Map');
+      $block['content'] = custom_module_block_contents($delta);
+      break;
+    }
+  }
+
+  return $block;
+}
+
+/**
+ * Custom Module Block contents.
+ *
+ * @param string $delta
+ *   The block ID.
+ *
+ * @return string
+ *   HTML output.
+ */
+function custom_module_block_contents($delta) {
+  $output = '';
+  switch ($delta) {
+    case 'gmap':{
+      module_load_include('inc', 'location', 'earth');
+
+      // 100 miles.
+      $distance_meters = 100 * 1609.34;
+
+      // Determine the range of lat and long from the default center.
+      $lat = variable_get('custom_module_default_center_lat');
+      $long = variable_get('custom_module_default_center_long');
+
+      $range_lat = earth_latitude_range($long, $lat, $distance_meters);
+      $range_long = earth_longitude_range($long, $lat, $distance_meters);
+
+      // Build query.
+      $query = new EntityFieldQuery();
+
+      // Only show nodes.
+      $query->entityCondition('entity_type', 'node');
+
+      // Only show Custom Module.
+      $query->entityCondition('bundle', 'custom_module');
+
+      // Only show latitude between range.
+      $query->fieldCondition('custom_module_latitude', 'value', $range_lat, 'BETWEEN');
+
+      // Only show longitude between range.
+      $query->fieldCondition('custom_module_longitude', 'value', $range_long, 'BETWEEN');
+
+      // Execute query.
+      $result = $query->execute();
+
+      // No results.
+      if (!isset($result['node'])) {
+        return '';
+      }
+
+      $nodes = node_load_multiple(array_keys($result['node']));
+
+      module_load_include('inc', 'gmap3_tools');
+
+      $markers = array();
+
+      foreach ($nodes as $node) {
+        $lat = $node->custom_module_latitude[LANGUAGE_NONE][0]['value'];
+        $long = $node->custom_module_longitude[LANGUAGE_NONE][0]['value'];
+
+        // Cannot render map without both.
+        if (($lat == '') || ($long == '')) {
+          continue;
+        }
+
+        $facility_name = check_plain($node->title);
+        $description = check_plain($node->body[LANGUAGE_NONE][0]['value']);
+
+        // Add a link to the node.
+        $description .= ' ' . l(t('More info'), 'node/' . $node->nid);
+
+        // Add to markers.
+        $markers[] = gmap3_tools_create_marker($lat, $long, $facility_name, $description);
+      }
+
+      // Create map with all the markers.
+      gmap3_tools_add_map(array(
+        'mapId' => 'gmap-canvas-block',
+        'mapOptions' => array(
+          'mapTypeId' => GMAP3_TOOLS_MAP_TYPE_ID_SATELLITE,
+        ),
+        'markers' => $markers,
+        'gmap3ToolsOptions' => array(
+          'defaultMarkersPosition' => GMAP3_TOOLS_DEFAULT_MARKERS_POSITION_CENTER_ZOOM,
+        ),
+      ));
+
+      // HTML container for the map.
+      $output = '<div id="gmap-canvas-block" style="width:500px;height:400px;"></div>';
+      break;
+    }
+  }
+  return $output;
+}
