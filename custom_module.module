@@ -150,28 +150,84 @@
    //dpm($form_state['values']);
 
    // Regular expression for validating signed degrees.
-   $signed_degree_regex = '/^[+-]?\d+(\.\d+)?$/';
+   //$signed_degree_regex = '/^[+-]?\d+(\.\d+)?$/';
 
    // Shorthand for long array names.
-   $lat = $form_state['values']['custom_module_default_center_lat'];
-   $long = $form_state['values']['custom_module_default_center_long'];
+   //$lat = $form_state['values']['custom_module_default_center_lat'];
+   //$long = $form_state['values']['custom_module_default_center_long'];
 
    // Validate latitude and longitude format.
-   if (!preg_match($signed_degree_regex, $lat)) {
+  /* if (!preg_match($signed_degree_regex, $lat)) {
      form_set_error('custom_module_default_center_lat', t('Invalid latitude; must be a signed degree (DDD.dddd).'));
    }
    if (!preg_match($signed_degree_regex, $long)) {
      form_set_error('custom_module_default_center_long', t('Invalid longitude; must be a signed degree (DDD.dddd).'));
-   }
+   }*/
 
    // Validate latitude and longitude values.
-   if (!((-180 <= $lat) && ($lat <= 180))) {
+  /* if (!((-180 <= $lat) && ($lat <= 180))) {
      form_set_error('custom_module_default_center_lat', t('Latitude must be between -180 and 180'));
    }
    if (!((-180 <= $long) && ($long <= 180))) {
      form_set_error('custom_module_default_center_long', t('Longitude must be between -180 and 180'));
    }
+*/
+
+
+   // Validate Unit Count.
+   $value = $form_state['values']['custom_module_unit_count'][LANGUAGE_NONE][0]['value'];
+
+
+
+   if ($value !== '' && (!is_numeric($value) || intval($value) != $value || $value <= 0)) {
+     form_set_error('custom_modulem_unit_count', t('The number of units on a custom_module must be a positive whole number.'));
+   }
+
+   // Validate latitude.
+   $lat = $form_state['values']['custom_module_latitude'][LANGUAGE_NONE][0]['value'];
+   if (!_custom_module_validate_geo_coord_range($lat) || !_custom_module_validate_signed_degrees($lat)) {
+     form_set_error('custom_module_latitude', t('Latitude must be valid coordinates in signed degrees.'));
+   }
+
+   // Validate longitude.
+   $long = $form_state['values']['custom_module_longitude'][LANGUAGE_NONE][0]['value'];
+   if (!_custom_module_validate_geo_coord_range($long) || !_custom_module_validate_signed_degrees($long)) {
+     form_set_error('custom_module_longitude', t('Longitude must be valid coordinates in signed degrees.'));
+   }
+
+
  }
+
+
+
+ /**
+  * Determine if a value is in signed degrees format.
+  *
+  * @param string $value
+  *   The value to be tested.
+  *
+  * @return boolean
+  *   TRUE if correctly formatted.
+  */
+ function _custom_module_validate_signed_degrees($value) {
+   $signed_degree_regex = '/^[+-]?\d+(\.\d+)?$/';
+   return preg_match($signed_degree_regex, $value) ? TRUE : FALSE;
+ }
+
+ /**
+  * Determine if a geographic coordinate is within the valid range.
+  *
+  * @param string $value
+  *   The value to be tested.
+  *
+  * @return boolean
+  *   TRUE if between -180 and 180.
+  */
+ function _custom_module_validate_geo_coord_range($value) {
+   return ((-180 <= $value) && ($value <= 180));
+ }
+
+
 
  /**
   * Process a validated Custom Module admin setting submission.
