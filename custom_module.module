@@ -75,7 +75,7 @@
 
    $form['default_center'] = array(
      '#title' => t('Map Center'),
-     '#description' => t('Location of the center of the map of wind farms.'),
+     '#description' => t('Location of the center of the map of Custom Module.'),
      '#type' => 'fieldset',
      '#collapsible' => TRUE,
      '#collapsed' => FALSE,
@@ -193,9 +193,10 @@ function custom_module_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Wind Farm Google Map theme function.
+ * Custom Module Google Map theme function.
  */
 function theme_custom_module_gmap($variables) {
+  //dpm ($variables)
   // Check to see if the Google Map is enabled.
   if (!variable_get('custom_module_gmap')) {
     return;
